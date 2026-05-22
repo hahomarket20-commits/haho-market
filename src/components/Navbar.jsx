@@ -14,9 +14,6 @@ function Navbar() {
   const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [rememberMe, setRememberMe] = useState(true)
 
-  // ⭐ NEW: mobile menu state
-  const [menuOpen, setMenuOpen] = useState(false)
-
   useEffect(() => {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser()
@@ -31,6 +28,7 @@ function Navbar() {
     0
   )
 
+  // 🔐 ADMIN CHECK
   const isAdmin = user?.user_metadata?.role === "admin"
 
   const handleLogout = async () => {
@@ -56,26 +54,16 @@ function Navbar() {
               <span className="text-white">Market</span>
             </Link>
 
-            {/* ⭐ MENU BUTTON (MOBILE) */}
-            <button
-              className="text-white text-3xl md:hidden"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              ☰
-            </button>
-
-            {/* DESKTOP LINKS */}
-            <div className="hidden md:flex gap-4">
-              <Link to="/" className={`${linkStyle} text-yellow-400`}>Home</Link>
-              <Link to="/products" className={`${linkStyle} text-yellow-400`}>Products</Link>
-              <Link to="/orders" className={`${linkStyle} text-yellow-400`}>Orders</Link>
-            </div>
+            <Link to="/" className={`${linkStyle} text-yellow-400`}>Home</Link>
+            <Link to="/products" className={`${linkStyle} text-yellow-400`}>Products</Link>
+            <Link to="/orders" className={`${linkStyle} text-yellow-400`}>Orders</Link>
 
           </div>
 
-          {/* RIGHT (DESKTOP ONLY) */}
-          <div className="hidden md:flex items-center gap-4 text-sm">
+          {/* RIGHT */}
+          <div className="flex items-center gap-4 text-sm">
 
+            {/* WISHLIST */}
             <Link className={linkStyle + " text-yellow-400"} to="/wishlist">
               Wishlist {wishlist.length > 0 && (
                 <span className="ml-2 text-xs bg-red-500 px-2 py-0.5 rounded-full text-white">
@@ -84,6 +72,7 @@ function Navbar() {
               )}
             </Link>
 
+            {/* CART */}
             <Link className={linkStyle + " text-yellow-400"} to="/cart">
               Cart {totalItems > 0 && (
                 <span className="ml-2 text-xs bg-yellow-400 text-black px-2 py-0.5 rounded-full">
@@ -92,13 +81,17 @@ function Navbar() {
               )}
             </Link>
 
+            {/* USER */}
             {user ? (
+
               <div className="flex items-center gap-2">
 
+                {/* USER NAME */}
                 <span className="text-yellow-400 font-semibold text-sm">
                   {user.email?.split("@")[0]}
                 </span>
 
+                {/* ⭐ ADMIN ONLY DASHBOARD */}
                 {isAdmin && (
                   <Link
                     to="/dashboard"
@@ -108,41 +101,30 @@ function Navbar() {
                   </Link>
                 )}
 
+                {/* LOGOUT */}
                 <button
                   onClick={() => setShowLogoutModal(true)}
-                  className="px-3 py-1 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold transition"
+                  className="px-3 py-1 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold transition active:scale-95"
                 >
                   Logout
                 </button>
 
               </div>
+
             ) : (
+
               <Link
                 to="/login"
                 className="px-4 py-2 rounded-xl bg-yellow-400 text-black font-bold hover:bg-yellow-300 transition"
               >
                 Login
               </Link>
+
             )}
 
           </div>
 
         </div>
-
-        {/* 📱 MOBILE MENU */}
-        {menuOpen && (
-          <div className="md:hidden bg-black border-t border-zinc-800 px-6 py-4 flex flex-col gap-3">
-
-            <Link onClick={() => setMenuOpen(false)} to="/" className={linkStyle + " text-yellow-400"}>Home</Link>
-            <Link onClick={() => setMenuOpen(false)} to="/products" className={linkStyle + " text-yellow-400"}>Products</Link>
-            <Link onClick={() => setMenuOpen(false)} to="/orders" className={linkStyle + " text-yellow-400"}>Orders</Link>
-
-            <Link onClick={() => setMenuOpen(false)} to="/wishlist" className={linkStyle + " text-yellow-400"}>Wishlist</Link>
-            <Link onClick={() => setMenuOpen(false)} to="/cart" className={linkStyle + " text-yellow-400"}>Cart</Link>
-
-          </div>
-        )}
-
       </nav>
 
       {/* 🚨 LOGOUT MODAL */}
@@ -159,6 +141,7 @@ function Navbar() {
               Are you sure you want to logout?
             </p>
 
+            {/* REMEMBER ME OPTION */}
             <label className="flex items-center justify-center gap-2 text-sm text-yellow-400 mb-4">
               <input
                 type="checkbox"
