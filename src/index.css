@@ -25,16 +25,14 @@ body {
 .navbar {
   background: #0f172a;
   color: white;
-  padding: 15px 20px;
+  padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
   flex-wrap: wrap;
 }
 
+/* Links */
 .navbar a {
   color: white;
   text-decoration: none;
@@ -45,6 +43,37 @@ body {
 
 .navbar a:hover {
   color: #38bdf8;
+}
+
+/* Desktop links */
+.desktop-links {
+  display: flex;
+  gap: 15px;
+}
+
+/* Mobile menu button */
+.menu-btn {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* Mobile menu */
+.mobile-menu {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #111;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.mobile-menu a {
+  padding: 10px;
+  border-bottom: 1px solid #333;
 }
 
 /* ========== BUTTONS ========== */
@@ -74,7 +103,7 @@ select {
   border-radius: 8px;
 }
 
-/* ========== PRODUCTS GRID (DESKTOP) ========== */
+/* ========== PRODUCTS GRID ========== */
 .products {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -82,7 +111,7 @@ select {
   margin-top: 20px;
 }
 
-/* ========== PRODUCT CARD ========== */
+/* Product card */
 .product-card {
   background: white;
   border-radius: 12px;
@@ -131,23 +160,28 @@ select {
 
 /* ========== MOBILE ========== */
 @media (max-width: 768px) {
+
   .products {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .navbar {
-    flex-direction: column;
-    text-align: center;
+  .desktop-links {
+    display: none;
   }
 
-  .navbar a {
+  .menu-btn {
     display: block;
-    margin: 5px 0;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
 /* ========== SMALL MOBILE ========== */
 @media (max-width: 480px) {
+
   .products {
     grid-template-columns: 1fr;
   }

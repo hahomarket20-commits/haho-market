@@ -11,7 +11,6 @@ function Navbar() {
   const navigate = useNavigate()
 
   const [user, setUser] = useState(null)
-  const [showLogoutModal, setShowLogoutModal] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
@@ -23,94 +22,48 @@ function Navbar() {
   }, [])
 
   const totalItems = cart?.reduce((sum, item) => sum + (item.quantity || 1), 0)
-  const isAdmin = user?.user_metadata?.role === "admin"
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    setUser(null)
-    navigate("/")
-  }
-
-  const linkStyle =
-    "block px-3 py-2 rounded-lg font-semibold hover:bg-yellow-400 hover:text-black"
 
   return (
-    <nav className="bg-black text-white border-b border-zinc-800">
+    <nav className="navbar">
 
-      {/* HEADER */}
-      <div className="flex items-center justify-between px-4 py-3">
-
-        {/* LOGO */}
-        <Link to="/" className="text-2xl font-bold">
-          <span className="text-yellow-400">Haho</span>
-          <span>Market</span>
+      {/* LEFT */}
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <Link to="/" style={{ fontSize: "20px", fontWeight: "bold", color: "yellow" }}>
+          HahoMarket
         </Link>
 
-        {/* MENU BUTTON (MOBILE ONLY) */}
+        {/* MENU BUTTON */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="text-white text-3xl md:hidden"
+          style={{
+            fontSize: "25px",
+            background: "none",
+            color: "white",
+            border: "none",
+            cursor: "pointer"
+          }}
         >
           ☰
         </button>
-
-        {/* DESKTOP LINKS */}
-        <div className="hidden md:flex gap-4 items-center">
-
-          <Link to="/" className="hover:text-yellow-400">Home</Link>
-          <Link to="/products" className="hover:text-yellow-400">Products</Link>
-          <Link to="/orders" className="hover:text-yellow-400">Orders</Link>
-
-          <Link to="/wishlist" className="hover:text-yellow-400">
-            Wishlist ({wishlist.length})
-          </Link>
-
-          <Link to="/cart" className="hover:text-yellow-400">
-            Cart ({totalItems})
-          </Link>
-
-        </div>
       </div>
 
-      {/* 📱 MOBILE MENU */}
+      {/* DESKTOP LINKS */}
+      <div className="desktop-links">
+        <Link to="/">Home</Link>
+        <Link to="/products">Products</Link>
+        <Link to="/orders">Orders</Link>
+        <Link to="/wishlist">Wishlist ({wishlist.length})</Link>
+        <Link to="/cart">Cart ({totalItems})</Link>
+      </div>
+
+      {/* MOBILE MENU */}
       {menuOpen && (
-        <div className="md:hidden bg-zinc-900 px-4 py-3 space-y-2">
-
-          <Link onClick={() => setMenuOpen(false)} to="/" className={linkStyle}>Home</Link>
-          <Link onClick={() => setMenuOpen(false)} to="/products" className={linkStyle}>Products</Link>
-          <Link onClick={() => setMenuOpen(false)} to="/orders" className={linkStyle}>Orders</Link>
-          <Link onClick={() => setMenuOpen(false)} to="/wishlist" className={linkStyle}>Wishlist</Link>
-          <Link onClick={() => setMenuOpen(false)} to="/cart" className={linkStyle}>Cart</Link>
-
-        </div>
-      )}
-
-      {/* LOGOUT MODAL (unchanged) */}
-      {showLogoutModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-          <div className="bg-zinc-900 p-6 rounded-xl w-80 text-center">
-
-            <h2 className="text-lg font-bold mb-3">Confirm Logout</h2>
-
-            <div className="flex gap-3 mt-4">
-
-              <button
-                onClick={() => setShowLogoutModal(false)}
-                className="flex-1 bg-gray-600 py-2 rounded"
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={handleLogout}
-                className="flex-1 bg-red-500 py-2 rounded"
-              >
-                Logout
-              </button>
-
-            </div>
-
-          </div>
+        <div className="mobile-menu">
+          <Link onClick={() => setMenuOpen(false)} to="/">Home</Link>
+          <Link onClick={() => setMenuOpen(false)} to="/products">Products</Link>
+          <Link onClick={() => setMenuOpen(false)} to="/orders">Orders</Link>
+          <Link onClick={() => setMenuOpen(false)} to="/wishlist">Wishlist</Link>
+          <Link onClick={() => setMenuOpen(false)} to="/cart">Cart</Link>
         </div>
       )}
 
